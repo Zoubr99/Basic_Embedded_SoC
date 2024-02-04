@@ -33,20 +33,7 @@ module gpi
         else 
             rd_data_reg <= data_in;
 
-    assign rd_data[W-1:0] = rd_data_reg
-    assign rd_data[31:W] = 0 // assign the rest of the regs to 0
+    assign rd_data[W-1:0] = rd_data_reg // assign the first 8 bits to the data reg 
+    assign rd_data[31:W] = 0 // assign the rest of the bits to 0
               
-endmodule
-
-
-
-
-
-
-
-
-
-
-
-    
 endmodule
