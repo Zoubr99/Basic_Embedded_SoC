@@ -53,14 +53,15 @@ module timer
             cntrl_reg <= 0;
         else 
             if (wr_en) 
-                cntrl_reg <= wr_data[0];
+                cntrl_reg <= wr_data[0]; // 32 bit word, only take the LSB
     
     // decoding logic
-    assign wr_en = write && cs && (addr[1:0] == 2'b10) // sets wr_en if write and cs and the adress to 
+    assign wr_en = write && cs && (addr[1:0] == 2'b10) // take the least 2 SB of the addr
+                                                       // sets wr_en if write and cs and the adress to 
                                                        // to be writting to is the 3rd register withing the core
 
     assign clear = wr_en && wr_data[1]; // takes the above addressing and adds the bit address to write to bit 1 and not 0         
-    assign go = cntrl_reg;
+    assign go = cntrl_reg; // just renaming cntr_reg to go "1 bit" 
 
     // slot read interface 
     assign rd_data = (addr[0]== 0)? count_reg[31:0]:  // if the first register did not rich 1, read bits of first register
