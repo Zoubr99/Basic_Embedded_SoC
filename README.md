@@ -4,4 +4,4 @@ Circuits and Block Diagrams of different modules will be added + some TBs of som
 
 Future Projects 1: RISC V core to replace the uBlaze core currently in use.
 
-Future Projects 2: ARM AHB Lite Bus to replace the Basic Bus Currently used, As the logic is almost identical to the Basic Bus.
+Future Projects 2: ARM AHB Lite Bus to replace the Basic Bus Currently used, As Although it is more complex and involved but the logic is almost identical to the Basic Bus.
