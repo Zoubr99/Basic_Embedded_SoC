@@ -77,3 +77,5 @@ int UartCore::rx_byte()
     }
 
 }
+
+// Display methods.................
