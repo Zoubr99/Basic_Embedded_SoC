@@ -16,7 +16,10 @@ module mmio_sys
    output logic [31:0] mmio_rd_data,
    // switches and LEDs
    input logic [N_SW-1:0] sw,
-   output logic [N_LED-1:0] led,       
+   output logic [N_LED-1:0] led,
+   // uart
+   input logic rx,
+   output logic tx         
 );
 
    // declaration
@@ -59,7 +62,22 @@ module mmio_sys
     .wr_data(wr_data_array[`S0_SYS_TIMER])
     );
 
-   // slot 1: gpo 
+   // slot 1: UART 
+   uart_wc uart_slot1 
+   (.clk(clk),
+    .reset(reset),
+    .cs(cs_array[`S1_UART1]),
+    .read(mem_rd_array[`S1_UART1]),
+    .write(mem_wr_array[`S1_UART1]),
+    .addr(reg_addr_array[`S1_UART1]),
+    .rd_data(rd_data_array[`S1_UART1]),
+    .wr_data(wr_data_array[`S1_UART1]), 
+    .tx(tx),
+    .rx(rx)
+    );
+   //assign rd_data_array[1] = 32'h00000000;
+
+   // slot 2: gpo 
    gpo #(.W(N_LED)) gpo_slot2 
    (.clk(clk),
     .reset(reset),
@@ -69,10 +87,10 @@ module mmio_sys
     .addr(reg_addr_array[`S2_LED]),
     .rd_data(rd_data_array[`S2_LED]),
     .wr_data(wr_data_array[`S2_LED]),
-    .dout(led)
+    .data_out(led)
     );
 
-   // slot 2: gpi 
+   // slot 3: gpi 
    gpi #(.W(N_SW)) gpi_slot3 
    (.clk(clk),
     .reset(reset),
@@ -82,7 +100,7 @@ module mmio_sys
     .addr(reg_addr_array[`S3_SW]),
     .rd_data(rd_data_array[`S3_SW]),
     .wr_data(wr_data_array[`S3_SW]),
-    .din(sw)
+    .data_in(sw)
     );
     
    // assign 0's to all unused slot rd_data signals

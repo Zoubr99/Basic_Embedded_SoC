@@ -78,4 +78,121 @@ int UartCore::rx_byte()
 
 }
 
-// Display methods.................
+
+// Display methods................. 
+
+    //*********** char and string display functions ***********//
+        void UartCore::disp(const char *str)
+        {
+            disp_str(str);
+        }
+
+        void UartCore::disp(char ch)
+        {
+            tx_byte(ch);
+        }
+    //***********************************************//
+
+
+    //*********** Integer display functions ***********//
+        void UartCore::disp(int n, int base, int len) 
+        {
+        char buf[33];         // 32 bit #
+        char *str, ch, sign;
+        int rem, i;
+        unsigned int un;
+
+        /* error check */
+        if (base != 2 && base != 8 && base != 16)
+            base = 10;
+        if (len > 32)
+            len = 32;
+        /* handle neg decimal # */
+        if (base == 10 && n < 0) {
+            un = (unsigned) -n;
+            sign = '-';
+        } else {
+            un = (unsigned) n; // interpreted as unsigned for hex/bin conversion
+            sign = ' ';
+        }
+        /* convert # to string */
+        str = &buf[33];
+        *str = '\0';
+        i = 0;
+        do {
+            str--;
+            rem = un % base;
+            un = un / base;
+            if (rem < 10)
+                ch = (char) rem + '0';
+            else
+                ch = (char) rem - 10 + 'a';
+            *str = ch;
+            i++;
+        } while (un);
+        /* attach - sign for neg decimal # */
+        if (sign == '-') {
+            str--;
+            *str = sign;
+            i++;
+        }
+        /* pad with blank */
+        while (i < len) {
+            str--;
+            *str = ' ';
+            i++;
+        };
+        disp_str(str);
+        }
+
+        void UartCore::disp(int n)
+        {
+            disp(n, 10, 0);
+        }
+
+        void UartCore::disp(int n, int base)
+        {
+            disp(n, base, 0);
+        }
+
+        void UartCore::disp(double f, int digit) 
+        {
+        double fa, frac; // absolute value of f
+        int n, i, i_part;
+
+        fa = f;
+        if (f < 0.0) {
+            fa = -f;
+            disp_str("-");
+        }
+        // display integer portion
+        i_part = (int) fa; // integer part of f
+        disp(i_part);
+        disp_str(".");
+        // display fraction part
+        frac = fa - (double) i_part;
+        for (n = 0; n < digit; n++) {
+            frac = frac * 10.0;
+            i = (int) frac;
+            disp(i);
+            frac = frac - i;
+        }
+        }
+    //***********************************************//
+
+
+    //***** Floating-points display functions ******//
+        void UartCore::disp(double f)
+        {
+            disp(f, 3);
+        }
+
+        void UartCore::disp(const char *str)
+        {
+            while((uint8_t) *str)
+            {
+                tx_byte(*str);
+                str++;
+            }
+        }
+    //***********************************************//

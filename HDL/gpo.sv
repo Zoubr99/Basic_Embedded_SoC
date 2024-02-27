@@ -1,6 +1,6 @@
 module gpo 
 
-    #(parameters W = 8)
+    #(parameter W = 8)
 
     (   // Standard signal 
         input logic clk, 
@@ -23,13 +23,13 @@ module gpo
     );
 
 
-    lgoic [W-1:0] buf_reg;
+    logic [W-1:0] buf_reg;
     logic wr_en;
 
     //body of the core (slot)
     always_ff @(posedge clk, negedge reset) 
 
-        if (reset) 
+        if (!reset) 
             buf_reg <= 0; 
         else 
             if (wr_en) 

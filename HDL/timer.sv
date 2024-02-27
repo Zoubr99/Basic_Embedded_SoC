@@ -11,7 +11,7 @@
 
 module timer 
 
-    #(parameters W = 8)
+    #(parameter W = 8)
 
     (   // Standard signal 
         input logic clk, 
@@ -26,37 +26,37 @@ module timer
                                 // in which to write to or read from
 
         input logic [31:0]wr_data, // writing data 
-        output logic [31:0]rd_data, // reading data
+        output logic [31:0]rd_data // reading data
     );
 
 
     // internal signals
-    lgoic [47:0] count_reg; // holds the counting 
+    logic [47:0] count_reg; // holds the counting 
     logic cntrl_reg; // holds the controling bits 
     logic wr_en, clear, go;
 
 
     // a basic counter
     always_ff @(posedge clk, negedge reset)
-    if (reset)
-        count_reg <= 0
-     else 
-        if (clear)
+         if (!reset)
             count_reg <= 0;
-        else if (go)
-        count_reg <= count_reg + 1;
+         else 
+            if (clear)
+                count_reg <= 0;
+            else if (go)
+                count_reg <= count_reg + 1;
 
 
     // wrapping circuit
     always_ff @(posedge clk, negedge reset)
-        if (reset) 
+        if (!reset) 
             cntrl_reg <= 0;
         else 
             if (wr_en) 
                 cntrl_reg <= wr_data[0]; // 32 bit word, only take the LSB
     
     // decoding logic
-    assign wr_en = write && cs && (addr[1:0] == 2'b10) // take the least 2 SB of the addr
+    assign wr_en = write && cs && (addr[1:0] == 2'b10); // take the least 2 SB of the addr
                                                        // sets wr_en if write and cs and the adress to 
                                                        // to be writting to is the 3rd register withing the core
 

@@ -1,6 +1,6 @@
 module gpi 
 
-    #( parameters W = 8) // number of input bits 8 switches
+    #( parameter W = 8) // number of input bits 8 switches
 
     (   // Standard signal 
         input logic clk, 
@@ -24,16 +24,16 @@ module gpi
 
 
     // internal register 
-    logic [W-1:0] rd_data_reg
+    logic [W-1:0] rd_data_reg;
 
     // body of the core (slot)
     always_ff @(posedge clk, negedge reset)
-        if (reset) 
+        if (!reset) 
             rd_data_reg <= 0;
         else 
             rd_data_reg <= data_in;
 
-    assign rd_data[W-1:0] = rd_data_reg // assign the first 8 bits to the data reg 
-    assign rd_data[31:W] = 0 // assign the rest of the bits to 0
+    assign rd_data[W-1:0] = rd_data_reg; // assign the first 8 bits to the data reg 
+    assign rd_data[31:W] = 0; // assign the rest of the bits to 0
               
 endmodule

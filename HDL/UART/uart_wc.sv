@@ -9,7 +9,7 @@
 //**********************************************************//
 
  module uart_wc
-    #(parameter FIF_DEPTH_BIT = 8)
+    #(parameter FIFO_DEPTH_BIT = 8)
 
     (
         //standard signals
@@ -38,11 +38,11 @@
     logic [7:0] r_data;
     logic  ctrl_reg;
 
-    uart #(.DBIT(8), .SB_TICK(16), FIFO_W(FIF_DEPTH_BIT)) uart_unit
-    (.*, .dvsr(dvsr_reg), .w_data(wr_data[7:0]));
+   uart #(.DBIT(8), .SB_TICK(16), .FIFO_W(FIFO_DEPTH_BIT)) uart_unit    
+   (.*, .dvsr(dvsr_reg), .w_data(wr_data[7:0]) );
 
-    always_ff @(posedge clk or negedge reset)
-        if (reset) 
+    always_ff @(posedge clk, negedge reset)
+        if(!reset)
             dvsr_reg <= 0;
         else 
         if (wr_dvsr)

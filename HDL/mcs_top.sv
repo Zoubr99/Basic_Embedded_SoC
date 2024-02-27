@@ -5,7 +5,10 @@ module mcs_top
    input logic reset_n,
    // switches and LEDs
    input logic [15:0] sw,
-   output logic [15:0] led,       
+   output logic [15:0] led,
+   // uart
+   input logic rx,
+   output logic tx        
 );
 
    // declaration
