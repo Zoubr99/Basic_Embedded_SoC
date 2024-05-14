@@ -37,8 +37,8 @@ module timer
 
 
     // a basic counter
-    always_ff @(posedge clk, negedge reset)
-         if (!reset)
+    always_ff @(posedge clk, posedge reset)
+         if (reset)
             count_reg <= 0;
          else 
             if (clear)
@@ -48,8 +48,8 @@ module timer
 
 
     // wrapping circuit
-    always_ff @(posedge clk, negedge reset)
-        if (!reset) 
+    always_ff @(posedge clk, posedge reset)
+        if (reset) 
             cntrl_reg <= 0;
         else 
             if (wr_en) 

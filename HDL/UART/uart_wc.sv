@@ -41,8 +41,8 @@
    uart #(.DBIT(8), .SB_TICK(16), .FIFO_W(FIFO_DEPTH_BIT)) uart_unit    
    (.*, .dvsr(dvsr_reg), .w_data(wr_data[7:0]) );
 
-    always_ff @(posedge clk, negedge reset)
-        if(!reset)
+    always_ff @(posedge clk, posedge reset)
+        if(reset)
             dvsr_reg <= 0;
         else 
         if (wr_dvsr)

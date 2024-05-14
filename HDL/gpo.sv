@@ -18,7 +18,7 @@ module gpo
         output logic [31:0]rd_data, // reading data
 
         // external signal 
-        output logic [W-1:0] data_out // the output to pass the data from a register within the core
+        output logic [W-1:0] dout // the output to pass the data from a register within the core
                                       // to the outside world
     );
 
@@ -27,9 +27,8 @@ module gpo
     logic wr_en;
 
     //body of the core (slot)
-    always_ff @(posedge clk, negedge reset) 
-
-        if (!reset) 
+    always_ff @(posedge clk, posedge reset) 
+        if (reset) 
             buf_reg <= 0; 
         else 
             if (wr_en) 
@@ -43,6 +42,6 @@ module gpo
     // slot read interface
     assign rd_data = 0;
     // external output
-    assign data_out = buf_reg;
+    assign dout = buf_reg;
         
 endmodule

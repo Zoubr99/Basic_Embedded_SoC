@@ -1,0 +1,49 @@
+module cordic_sine_generator (
+    input logic clk, // Clock input
+    input logic rst, // Reset input
+    output logic signed [15:0] sine_out // Sine wave output
+);
+
+// Define parameters
+parameter integer ANGLE_WIDTH = 16;
+parameter integer FRACTION_WIDTH = 14;
+
+// Define local variables
+logic signed [ANGLE_WIDTH-1:0] angle;
+logic signed [FRACTION_WIDTH-1:0] sine_value;
+
+// Initial angle value
+initial begin
+    angle = 0;
+end
+
+// CORDIC iteration loop
+always @(posedge clk or posedge rst) begin
+    if (rst) begin
+        angle <= 0;
+    end else begin
+        angle <= angle + 1; // Increment angle for each clock cycle (for demonstration purposes)
+    end
+end
+
+// CORDIC algorithm
+always @(*) begin
+    sine_value = 0;
+    logic signed [ANGLE_WIDTH-1:0] angle_temp = angle;
+    for (integer i = 0; i < ANGLE_WIDTH; i++) begin
+        if (angle_temp[i] == 1'b1) begin
+            sine_value = sine_value + (1 << (FRACTION_WIDTH - i - 1));
+            angle_temp = angle_temp - (1 << (ANGLE_WIDTH - i - 1));
+        end else begin
+            sine_value = sine_value - (1 << (FRACTION_WIDTH - i - 1));
+            angle_temp = angle_temp + (1 << (ANGLE_WIDTH - i - 1));
+        end
+    end
+end
+
+// Assign sine wave output
+assign sine_out = sine_value;
+
+endmodule
+
+

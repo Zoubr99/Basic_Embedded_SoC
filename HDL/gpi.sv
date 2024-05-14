@@ -18,7 +18,7 @@ module gpi
         output logic [31:0]rd_data, // reading data
 
         // external signal 
-        input logic [W-1:0] data_in // the input to pass the data from outside world
+        input logic [W-1:0] din // the input to pass the data from outside world
                                     // to a register within the core
     );
 
@@ -27,11 +27,11 @@ module gpi
     logic [W-1:0] rd_data_reg;
 
     // body of the core (slot)
-    always_ff @(posedge clk, negedge reset)
-        if (!reset) 
+    always_ff @(posedge clk, posedge reset)
+        if (reset) 
             rd_data_reg <= 0;
         else 
-            rd_data_reg <= data_in;
+            rd_data_reg <= din;
 
     assign rd_data[W-1:0] = rd_data_reg; // assign the first 8 bits to the data reg 
     assign rd_data[31:W] = 0; // assign the rest of the bits to 0

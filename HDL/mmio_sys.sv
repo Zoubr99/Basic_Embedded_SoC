@@ -87,7 +87,7 @@ module mmio_sys
     .addr(reg_addr_array[`S2_LED]),
     .rd_data(rd_data_array[`S2_LED]),
     .wr_data(wr_data_array[`S2_LED]),
-    .data_out(led)
+    .dout(led)
     );
 
    // slot 3: gpi 
@@ -100,13 +100,13 @@ module mmio_sys
     .addr(reg_addr_array[`S3_SW]),
     .rd_data(rd_data_array[`S3_SW]),
     .wr_data(wr_data_array[`S3_SW]),
-    .data_in(sw)
+    .din(sw)
     );
     
    // assign 0's to all unused slot rd_data signals
    generate
       genvar i;
-      for (i=3; i<64; i=i+1) begin:  unused_slot_gen
+      for (i=4; i<64; i=i+1) begin:  unused_slot_gen
          assign rd_data_array[i] = 32'hffffffff;
       end
    endgenerate
