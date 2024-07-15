@@ -27,7 +27,7 @@ void UartCore::set_baud_rate(int baud) // baud -> dvsr -> io_write
 
 
 // receiver fifo empty check
-void UartCore::rx_fifo_empty() 
+int UartCore::rx_fifo_empty()
 {
     uint32_t rd_word;
     int empty;
@@ -39,7 +39,7 @@ void UartCore::rx_fifo_empty()
 
 
 // transmitter fifo full check
-void UartCore::tx_fifo_full () 
+int UartCore::tx_fifo_full ()
 {   
     uint32_t rd_word;
     int full;
@@ -54,7 +54,7 @@ void UartCore::tx_fifo_full ()
 void UartCore::tx_byte(uint8_t byte)
 {
     // fifo busy loop
-    while(tx_fifo_full){};
+    while(tx_fifo_full()){};
     io_write(base_addr, WRR_DATA_REG, (uint32_t) byte);
 }
 
@@ -187,7 +187,7 @@ int UartCore::rx_byte()
             disp(f, 3);
         }
 
-        void UartCore::disp(const char *str)
+        void UartCore::disp_str(const char *str)
         {
             while((uint8_t) *str)
             {
