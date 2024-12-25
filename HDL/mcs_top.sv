@@ -8,7 +8,12 @@ module mcs_top
    output logic [15:0] led,
    // uart
    input logic rx,
-   output logic tx        
+   output logic tx,
+   output logic acl_sclk,
+   output logic acl_mosi,
+   input  logic acl_miso,
+   output logic acl_ss_n,
+   output logic ground      
 );
 
    // declaration
@@ -29,11 +34,14 @@ module mcs_top
    logic b_rd;     
    logic [20:0] b_addr;       
    logic [31:0] b_wr_data;    
-   logic [31:0] b_rd_data;    
+   logic [31:0] b_rd_data;   
 
    // body
    assign clk_100M = clk;                  // 100 MHz external clock
    assign reset_sys = !reset_n;
+   
+   reg logic_low = 0;   
+ assign ground = logic_low;
    
    //instantiate uBlaze MCS
    cpu cpu_unit (
@@ -65,7 +73,11 @@ module mcs_top
    .sw(sw),
    .led(led),
    .rx(rx),
-   .tx(tx)          
+   .tx(tx),
+   .acl_sclk(acl_sclk),
+   .acl_mosi(acl_mosi),
+   .acl_miso(acl_miso),
+   .acl_ss(acl_ss_n)       
   );   
 endmodule    
 

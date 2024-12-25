@@ -19,7 +19,11 @@ module mmio_sys
    output logic [N_LED-1:0] led,
    // uart
    input logic rx,
-   output logic tx         
+   output logic tx,
+   output logic acl_sclk,
+   output logic acl_mosi,
+   input  logic acl_miso,
+   output logic acl_ss         
 );
 
    // declaration
@@ -103,11 +107,26 @@ module mmio_sys
     .din(sw)
     );
     
+   spi_core #(.S(1)) spi_slot4 
+   (.clk(clk),
+    .reset(reset),
+    .cs(cs_array[`S4_SPI]),
+    .read(mem_rd_array[`S4_SPI]),
+    .write(mem_wr_array[`S4_SPI]),
+    .addr(reg_addr_array[`S4_SPI]),
+    .rd_data(rd_data_array[`S4_SPI]),
+    .wr_data(wr_data_array[`S4_SPI]),
+    .spi_sclk(acl_sclk),
+    .spi_mosi(acl_mosi),
+    .spi_miso(acl_miso),
+    .spi_ss_n(acl_ss)
+    );
+    
    // assign 0's to all unused slot rd_data signals
    generate
       genvar i;
-      for (i=4; i<64; i=i+1) begin:  unused_slot_gen
-         assign rd_data_array[i] = 32'hffffffff;
+      for (i=14; i<64; i=i+1) begin:  unused_slot_gen
+         assign rd_data_array[i] = 32'h0;
       end
    endgenerate
 endmodule

@@ -27,7 +27,7 @@ module spi(
 // now we need a state machine with 4 diffrent states
 
 typedef enum  { idle, cpha_delay, p0, p1 } state_type;
-state_type reg_state, next_state
+state_type reg_state, next_state;
 
 
 // internal signals (regesterd signals and new signals)
@@ -41,9 +41,9 @@ logic ready_i, spi_done_tick_i;
 logic p_clk;
 
     // Register Block (flip_flops)
-    always_ff @(posedge clk or posedge reset) begin
+    always_ff @(posedge clk, posedge reset) begin
         if(reset)begin
-            reg_state <= next_state;
+            reg_state <= idle;
             reg_serialin <= 0;
             reg_serialo <= 0;
             reg_bitn <= 0;
@@ -99,11 +99,11 @@ logic p_clk;
 
 //************************************ now p0 ****************************************//
 
-        po: begin
-            if (next_count == dvsr) begin
+        p0: begin
+            if (reg_count == dvsr) begin
                 next_state = p1;
                 next_serialin = {reg_serialin[6:0], miso};
-                next_bitn = 0;
+                next_count = 0;
             end
             else begin
                 next_count = reg_count + 1;
@@ -112,7 +112,7 @@ logic p_clk;
 
 //************************************ now p1 ****************************************//
         p1: begin
-            if (reg_count = dvsr)
+            if (reg_count == dvsr)
                 if (reg_bitn == 7) begin
                 spi_done_tick_i = 1;
                 next_state = idle;

@@ -141,10 +141,10 @@ set_property -dict {PACKAGE_PIN C15 IOSTANDARD LVCMOS33} [get_ports tmp_i2c_sda]
 # SPI Accelerometer
 # aclInt1 / aclInt2 signals are not used
 #====================================================================================================
-set_property -dict {PACKAGE_PIN E15 IOSTANDARD LVCMOS33} [get_ports acl_miso]
-set_property -dict {PACKAGE_PIN F14 IOSTANDARD LVCMOS33} [get_ports acl_mosi]
-set_property -dict {PACKAGE_PIN F15 IOSTANDARD LVCMOS33} [get_ports acl_sclk]
-set_property -dict {PACKAGE_PIN D15 IOSTANDARD LVCMOS33} [get_ports acl_ss_n]
+set_property -dict {PACKAGE_PIN G13 IOSTANDARD LVCMOS33} [get_ports ground]
+set_property -dict {PACKAGE_PIN F13 IOSTANDARD LVCMOS33} [get_ports acl_mosi]
+set_property -dict {PACKAGE_PIN H16 IOSTANDARD LVCMOS33} [get_ports acl_sclk]
+set_property -dict {PACKAGE_PIN E16 IOSTANDARD LVCMOS33} [get_ports acl_ss_n]
 # *********** aclInt1 / aclInt2 signals are not used
 #set_property -dict { PACKAGE_PIN B13   IOSTANDARD LVCMOS33 } [get_ports { aclInt1[1] }]; #IO_L2P_T0_AD8P_15 Sch=acl_int[1]
 #set_property -dict { PACKAGE_PIN C16   IOSTANDARD LVCMOS33 } [get_ports { aclInt1[2] }]; #IO_L20P_T3_A20_15 Sch=acl_int[2]
@@ -234,14 +234,14 @@ set_property -dict {PACKAGE_PIN G18 IOSTANDARD LVCMOS33} [get_ports {ja_btm[10]}
 # 4 out of 10 pins are for Vcc/Gnd
 # use two signals (for top and bottom rows) to maintain pin#
 #====================================================================================================
-set_property -dict {PACKAGE_PIN D14 IOSTANDARD LVCMOS33} [get_ports {jb_top[1]}]
+set_property -dict {PACKAGE_PIN D14 IOSTANDARD LVCMOS33} [get_ports acl_miso]
 set_property -dict {PACKAGE_PIN F16 IOSTANDARD LVCMOS33} [get_ports {jb_top[2]}]
 set_property -dict {PACKAGE_PIN G16 IOSTANDARD LVCMOS33} [get_ports {jb_top[3]}]
 set_property -dict {PACKAGE_PIN H14 IOSTANDARD LVCMOS33} [get_ports {jb_top[4]}]
-set_property -dict {PACKAGE_PIN E16 IOSTANDARD LVCMOS33} [get_ports {jb_btm[7]}]
-set_property -dict {PACKAGE_PIN F13 IOSTANDARD LVCMOS33} [get_ports {jb_btm[8]}]
-set_property -dict {PACKAGE_PIN G13 IOSTANDARD LVCMOS33} [get_ports {jb_btm[9]}]
-set_property -dict {PACKAGE_PIN H16 IOSTANDARD LVCMOS33} [get_ports {jb_btm[10]}]
+#set_property -dict {PACKAGE_PIN E16 IOSTANDARD LVCMOS33} [get_ports acl_ss_n]
+#set_property -dict {PACKAGE_PIN F13 IOSTANDARD LVCMOS33} [get_ports acl_mosi] # set 0
+#set_property -dict {PACKAGE_PIN G13 IOSTANDARD LVCMOS33} [get_ports acl_miso]
+#set_property -dict {PACKAGE_PIN H16 IOSTANDARD LVCMOS33} [get_ports acl_sclk]
 
 #====================================================================================================
 #Pmod Header JC

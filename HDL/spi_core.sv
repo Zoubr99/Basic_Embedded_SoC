@@ -1,6 +1,6 @@
 module spi_core 
 
-    #(parameters S = 2) 
+    #(parameter S = 2) 
 
     (
     // standard core signals
@@ -14,11 +14,10 @@ module spi_core
     input logic [31:0] wr_data,
     output logic [31:0] rd_data,
     // spi core external signals
-    output logic [S-1:0] spi_ss_n,
     output logic spi_sclk,
     output logic spi_mosi,
-    input logic spi_miso
-    
+    input logic spi_miso,
+    output logic [S-1:0] spi_ss_n
     );
     
     // signal declaration
@@ -30,7 +29,7 @@ module spi_core
     logic [15:0] dvsr;
 
     // instantiate spi controller
-    spi spi_unit(
+    spi spi(
      .clk(clk),
      .reset(reset),
      .din(wr_data[7:0]),
@@ -39,15 +38,15 @@ module spi_core
      .cpol(cpol),
      .cpha(cpha),
      .dout(spi_out),
-     .sclk(spi_clk),
+     .sclk(spi_sclk),
      .miso(spi_miso),
      .mosi(spi_mosi),
      .spi_done_tick(),
-     .read(spi_reaady)
+     .ready(spi_ready)
     );
 
     // registers controlling logic
-    always_ff @(posedge clk or posedge reset) begin
+    always_ff @(posedge clk, posedge reset) begin
         if (reset) begin
             ctrl_reg <= 17'h0_0200;
             ss_n_reg <= {S{1'b1}};
@@ -73,6 +72,6 @@ module spi_core
  assign spi_ss_n = ss_n_reg;
 
  // read register multiplexing ie routing
- rd_data = {23'b0, spi_ready, spi_out};
+ assign rd_data = {23'b0, spi_ready, spi_out};
 
 endmodule
